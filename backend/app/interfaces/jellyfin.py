@@ -100,14 +100,14 @@ class JellyfinInterface(MediaServer, EpisodeDataSource, SyncInterface, Interface
         self._interface_id = interface_id
         self.session = WebInterface('Jellyfin', use_ssl)
         self.url = url.removesuffix('/')
-        self.__params = {'api_key': api_key}
         self.libraries = {}
         self.user_id = ''
 
         self._session = WebSession(
             url,
             verify_ssl=use_ssl,
-            base_parameters={'api_key': api_key},
+            # Legacy api_key auth is disabled as of Jellyfin 12.0
+            base_headers={'Authorization': f'MediaBrowser Token="{api_key}"'},
             timeout=config.JELLYFIN_REQUEST_TIMEOUT,
         )
 
