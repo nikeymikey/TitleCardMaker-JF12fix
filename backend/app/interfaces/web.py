@@ -340,6 +340,7 @@ class WebSession:
             *,
             verify_ssl: bool = True,
             base_parameters: dict[str, Any] = {},
+            base_headers: dict[str, str] = {},
             timeout: int = 15,
         ) -> None:
         """
@@ -351,10 +352,13 @@ class WebSession:
             verify_ssl: Whether to verify SSL connections with this
                 session.
             base_parameters: Base parameters to use for all requests.
+            base_headers: Base headers to use for all requests. These
+                are merged with any headers of an individual request.
         """
 
         self.session = Session()
         self.session.verify = verify_ssl
+        self.session.headers.update(base_headers)
 
         self._base_url = base_url.removesuffix('/')
         self._timeout = timeout
